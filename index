@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>แบบฟอร์มตรวจเช็คน็อต</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    max-width: 500px;
+    margin:auto;
+    padding:20px;
+}
+
+h2{
+    text-align:center;
+}
+
+.checklist{
+    background:#f4f6f8;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    background:#2e7d32;
+    color:white;
+}
+
+button:hover{
+    background:#1b5e20;
+}
+</style>
+</head>
+
+<body>
+
+<h2>✅ ตรวจเช็คน็อตก่อนเริ่มงาน</h2>
+
+<div class="checklist">
+<label><input type="checkbox"> (A) น็อตยึด Hopper กับแท่นเครื่อง</label><br><br>
+<label><input type="checkbox"> (B) น็อตรอบ Hopper ซ้าย-ขวา</label><br><br>
+<label><input type="checkbox"> (C) น็อตยึดท่อส่ง Bulk</label><br><br>
+<label><input type="checkbox"> (D) น็อตบริเวณปากถัง Bulk</label>
+</div>
+
+<input type="text" id="inspector" placeholder="ผู้ตรวจสอบ"><br><br>
+<input type="datetime-local" id="date"><br><br>
+
+<button onclick="submitCheck()">บันทึกการตรวจสอบ</button>
+
+<p id="result"></p>
+
+<script>
+function submitCheck(){
+
+let checks = document.querySelectorAll('input[type="checkbox"]');
+let allChecked = true;
+
+checks.forEach(box=>{
+    if(!box.checked){
+        allChecked = false;
+    }
+});
+
+let name = document.getElementById("inspector").value;
+
+if(name === ""){
+    alert("กรุณาใส่ชื่อผู้ตรวจสอบ");
+    return;
+}
+
+if(!allChecked){
+    document.getElementById("result").innerHTML =
+    "⚠️ ตรวจไม่ครบ! กรุณาตรวจน็อตให้ครบก่อนเริ่มเครื่อง";
+}else{
+    document.getElementById("result").innerHTML =
+    "✅ ตรวจครบแล้ว สามารถเริ่มเครื่องได้";
+}
+}
+</script>
+
+</body>
+</html>
