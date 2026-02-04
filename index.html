@@ -11,30 +11,23 @@ body{
   margin: auto;
   padding: 20px;
 }
-
-h2{
-  text-align:center;
-}
-
+h2{ text-align:center; }
 .checklist{
   background:#f4f6f8;
   padding:15px;
   border-radius:10px;
 }
-
 .checklist label{
   display:block;
   margin-bottom:10px;
   font-size:16px;
 }
-
 input[type="text"], input[type="datetime-local"]{
   width:100%;
   padding:8px;
   margin-top:8px;
   margin-bottom:12px;
 }
-
 button{
   width:100%;
   padding:12px;
@@ -44,15 +37,8 @@ button{
   background:#2e7d32;
   color:white;
 }
-
-button:hover{
-  background:#1b5e20;
-}
-
-#result{
-  margin-top:15px;
-  font-weight:bold;
-}
+button:hover{ background:#1b5e20; }
+#result{ margin-top:15px; font-weight:bold; }
 </style>
 </head>
 
@@ -82,8 +68,9 @@ function sendData(){
 
   const url = "https://script.google.com/macros/s/AKfycbzUGOrUviuHHcZKvt2yVbQT1Za9bVIG3gwmMdySU4MEbqJu8ZCZs95siP5nW9Ecr7Kc/exec";
 
-  let checks = document.querySelectorAll('input[type="checkbox"]');
-  let name = document.getElementById("inspector").value;
+  const checks = document.querySelectorAll('input[type="checkbox"]');
+  const name = document.getElementById("inspector").value;
+  const date = document.getElementById("date").value;
 
   if(name === ""){
     alert("กรุณากรอกชื่อผู้ตรวจ");
@@ -95,30 +82,31 @@ function sendData(){
 
   if(!allChecked){
     document.getElementById("result").innerHTML =
-    "⚠️ ตรวจไม่ครบ! กรุณาตรวจน็อตให้ครบก่อนเริ่มเครื่อง";
+      "⚠️ ตรวจไม่ครบ! กรุณาตรวจน็อตให้ครบก่อนเริ่มเครื่อง";
     return;
   }
 
   const data = {
     inspector: name,
-    A: checks[0].checked ? "ผ่าน" : "ไม่ผ่าน",
-    B: checks[1].checked ? "ผ่าน" : "ไม่ผ่าน",
-    C: checks[2].checked ? "ผ่าน" : "ไม่ผ่าน",
-    D: checks[3].checked ? "ผ่าน" : "ไม่ผ่าน"
+    datetime: date,
+    A: "ผ่าน",
+    B: "ผ่าน",
+    C: "ผ่าน",
+    D: "ผ่าน"
   };
 
   fetch(url,{
     method:"POST",
+    headers:{ "Content-Type":"application/json" },
     body: JSON.stringify(data)
   })
   .then(()=>{
     document.getElementById("result").innerHTML =
-    "✅ บันทึกข้อมูลเรียบร้อย สามารถเริ่มเครื่องได้";
+      "✅ บันทึกข้อมูลเรียบร้อย สามารถเริ่มเครื่องได้";
   })
   .catch(()=>{
     alert("❌ ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่");
   });
-
 }
 </script>
 
