@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบฟอร์มตรวจเช็คน็อต</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    max-width: 500px;
+    margin:auto;
+    padding:20px;
+    background:#ffffff;
+}
+
+h2{
+    text-align:center;
+}
+
+.checklist{
+    background:#f4f6f8;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin-bottom:10px;
+}
+
+input[type="text"],
+input[type="datetime-local"]{
+    width:100%;
+    padding:10px;
+    margin-bottom:12px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:15px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    background:#2e7d32;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1b5e20;
+}
+
+button:disabled{
+    background:#9e9e9e;
+    cursor:not-allowed;
+}
+
+#result{
+    margin-top:15px;
+    padding:12px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.ok{
+    background:#e8f5e9;
+    color:#2e7d32;
+}
+
+.warn{
+    background:#ffebee;
+    color:#c62828;
+}
+</style>
+</head>
+
+<body>
+
+<h2>✅ ตรวจเช็คน็อตก่อนเริ่มงาน</h2>
+
+<div class="checklist">
+<label><input type="checkbox"> (A) น็อตยึด Hopper กับแท่นเครื่อง</label>
+<label><input type="checkbox"> (B) น็อตรอบ Hopper ซ้าย-ขวา</label>
+<label><input type="checkbox"> (C) น็อตยึดท่อส่ง Bulk</label>
+<label><input type="checkbox"> (D) น็อตบริเวณปากถัง Bulk</label>
+</div>
+
+<input type="text" id="inspector" placeholder="ชื่อผู้ตรวจสอบ">
+<input type="datetime-local" id="date">
+
+<button id="saveBtn" onclick="submitCheck()">บันทึกการตรวจสอบ</button>
+
+<div id="result"></div>
+
+<script>
+function submitCheck(){
+
+    const checks = document.querySelectorAll('input[type="checkbox"]');
+    const name = document.getElementById("inspector").value.trim();
+    const date = document.getElementById("date").value;
+    const result = document.getElementById("result");
+    const btn = document.getElementById("saveBtn");
+
+    // ตรวจชื่อ
+    if(name === ""){
+        alert("กรุณาใส่ชื่อผู้ตรวจสอบ");
+        return;
+    }
+
+    // ตรวจวันเวลา
+    if(date === ""){
+        alert("กรุณาเลือกวันและเวลา");
+        return;
+    }
+
+    // ตรวจ checkbox
+    let allChecked = true;
+    checks.forEach(box=>{
+        if(!box.checked){
+            allChecked = false;
+        }
+    });
+
+    if(!allChecked){
+        result.className = "warn";
+        result.innerHTML = "⚠️ ตรวจไม่ครบ! กรุณาตรวจน็อตให้ครบก่อนเริ่มเครื่อง";
+        return;
+    }
+
+    // ผ่านทั้งหมด
+    result.className = "ok";
+    result.innerHTML = `
+        ✅ ตรวจครบแล้ว<br><br>
+        ผู้ตรวจสอบ: ${name}<br>
+        วันเวลา: ${new Date(date).toLocaleString("th-TH")}<br><br>
+        สามารถเริ่มเครื่องได้
+    `;
+
+    // ปิดปุ่มกันกดซ้ำ
+    btn.disabled = true;
+}
+</script>
+
+</body>
+</html>
